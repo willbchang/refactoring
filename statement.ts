@@ -14,7 +14,7 @@ export function statement(invoice: Invoice, plays: Plays) {
     }
 
     result.amount = getAmount(result)
-    result.volumeCredits =
+    result.volumeCredits = getVolumeCredits(result)
     return result
   }
 
@@ -43,6 +43,15 @@ export function statement(invoice: Invoice, plays: Plays) {
     }
     return result
   }
+
+  function getVolumeCredits(perf: StatementPerformance) {
+    let result = 0
+    result += Math.max(perf.audience - 30, 0)
+    if ('comedy' === perf.play.type) result += Math.floor(perf.audience / 5)
+
+    return result
+  }
+
 }
 
 function getPlainText(data: Statement) {
@@ -77,14 +86,6 @@ function getPlainText(data: Statement) {
     for (let perf of data.performances) {
       result += perf.volumeCredits
     }
-    return result
-  }
-
-  function getVolumeCredits(perf: StatementPerformance) {
-    let result = 0
-    result += Math.max(perf.audience - 30, 0)
-    if ('comedy' === perf.play.type) result += Math.floor(perf.audience / 5)
-
     return result
   }
 }
