@@ -10,9 +10,11 @@ export function statement(invoice: Invoice, plays: Plays) {
       ...performance,
       play: getPlay(performance),
       amount: 0,
+      volumeCredits: 0,
     }
 
     result.amount = getAmount(result)
+    result.volumeCredits =
     return result
   }
 
@@ -73,9 +75,16 @@ function getPlainText(data: Statement) {
   function getTotalVolumeCredits() {
     let result = 0
     for (let perf of data.performances) {
-      result += Math.max(perf.audience - 30, 0)
-      if ('comedy' === perf.play.type) result += Math.floor(perf.audience / 5)
+      result += perf.volumeCredits
     }
+    return result
+  }
+
+  function getVolumeCredits(perf: StatementPerformance) {
+    let result = 0
+    result += Math.max(perf.audience - 30, 0)
+    if ('comedy' === perf.play.type) result += Math.floor(perf.audience / 5)
+
     return result
   }
 }
