@@ -4,17 +4,17 @@ export function statement(invoice: Invoice, plays: Plays) {
   let result = `Statement for ${invoice.customer}\n`
 
   for (let perf of invoice.performances) {
-    // add volume credits
-    volumeCredits += Math.max(perf.audience - 30, 0)
-    // add extra credit for every ten comedy attendees
-    if ('comedy' === getPlay(perf).type) volumeCredits += Math.floor(perf.audience / 5)
-    // print line for this order
-    result += ` ${getPlay(perf).name}: ${usd(getAmount(perf))} (${perf.audience} seats)\n`
     totalAmount += getAmount(perf)
+  }
+  for (let perf of invoice.performances) {
+    volumeCredits += Math.max(perf.audience - 30, 0)
+    if ('comedy' === getPlay(perf).type) volumeCredits += Math.floor(perf.audience / 5)
+  }
+  for (let perf of invoice.performances) {
+    result += ` ${getPlay(perf).name}: ${usd(getAmount(perf))} (${perf.audience} seats)\n`
   }
 
   result += `Amount owed is ${usd(totalAmount)}\n`
-
   result += `You earned ${volumeCredits} credits\n`
 
   return result
