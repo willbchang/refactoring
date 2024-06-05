@@ -1,4 +1,10 @@
 export function statement(invoice: Invoice, plays: Plays) {
+  const data = {
+  }
+  return getPlainText(data, invoice, plays)
+}
+
+function getPlainText(data: any, invoice: Invoice, plays: Plays) {
   let result = `Statement for ${invoice.customer}\n`
   for (let perf of invoice.performances) {
     result += ` ${getPlay(perf).name}: ${usd(getAmount(perf))} (${perf.audience} seats)\n`
