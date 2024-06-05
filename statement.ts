@@ -9,20 +9,44 @@ export function statement(invoice: Invoice, plays: Plays) {
     let result: StatementPerformance = {
       ...performance,
       play: getPlay(performance),
+      amount: 0,
     }
 
+    result.amount = getAmount(result)
     return result
   }
 
   function getPlay(perf: Performance) {
     return plays[perf.playID]
   }
+
+  function getAmount(perf: StatementPerformance) {
+    let result = 0
+    switch (perf.play.type) {
+      case 'tragedy':
+        result = 40000
+        if (perf.audience > 30) {
+          result += 1000 * (perf.audience - 30)
+        }
+        break
+      case 'comedy':
+        result = 30000
+        if (perf.audience > 20) {
+          result += 10000 + 500 * (perf.audience - 20)
+        }
+        result += 300 * perf.audience
+        break
+      default:
+        throw new Error(`unknown type: ${perf.play.type}`)
+    }
+    return result
+  }
 }
 
 function getPlainText(data: Statement) {
   let result = `Statement for ${data.customer}\n`
   for (let perf of data.performances) {
-    result += ` ${perf.play.name}: ${usd(getAmount(perf))} (${perf.audience} seats)\n`
+    result += ` ${perf.play.name}: ${usd(perf.amount)} (${perf.audience} seats)\n`
   }
 
   result += `Amount owed is ${usd(getTotalAmount())}\n`
@@ -41,7 +65,7 @@ function getPlainText(data: Statement) {
   function getTotalAmount() {
     let result = 0
     for (let perf of data.performances) {
-      result += getAmount(perf)
+      result += perf.amount
     }
     return result
   }

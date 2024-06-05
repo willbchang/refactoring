@@ -24,4 +24,5 @@ interface Statement {
 
 interface StatementPerformance extends Performance {
   play: Play
+  amount: number
 }
