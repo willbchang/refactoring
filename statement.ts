@@ -9,11 +9,11 @@ export function statement(invoice: Invoice, plays: Plays) {
     // add extra credit for every ten comedy attendees
     if ('comedy' === getPlay(perf).type) volumeCredits += Math.floor(perf.audience / 5)
     // print line for this order
-    result += ` ${getPlay(perf).name}: ${format(getAmount(perf) / 100)} (${perf.audience} seats)\n`
+    result += ` ${getPlay(perf).name}: ${format(getAmount(perf))} (${perf.audience} seats)\n`
     totalAmount += getAmount(perf)
   }
 
-  result += `Amount owed is ${format(totalAmount / 100)}\n`
+  result += `Amount owed is ${format(totalAmount)}\n`
 
   result += `You earned ${volumeCredits} credits\n`
 
@@ -49,6 +49,6 @@ export function statement(invoice: Invoice, plays: Plays) {
     return new Intl.NumberFormat('en-US', {
       style: 'currency', currency: 'USD',
       minimumFractionDigits: 2
-    }).format(amount)
+    }).format(amount / 100)
   }
 }
