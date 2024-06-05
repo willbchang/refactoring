@@ -8,7 +8,7 @@ export function statement(invoice: Invoice, plays: Plays) {
   }).format
 
   for (let perf of invoice.performances) {
-    let thisAmount = getAmount(getPlay(perf), perf)
+    let thisAmount = getAmount(perf)
     // add volume credits
     volumeCredits += Math.max(perf.audience - 30, 0)
     // add extra credit for every ten comedy attendees
@@ -22,9 +22,9 @@ export function statement(invoice: Invoice, plays: Plays) {
 
   result += `You earned ${volumeCredits} credits\n`
   return result
-  function getAmount(play: Play, perf: Performance) {
+  function getAmount(perf: Performance) {
     let thisAmount = 0
-    switch (play.type) {
+    switch (getPlay(perf).type) {
       case 'tragedy':
         thisAmount = 40000
         if (perf.audience > 30) {
@@ -39,7 +39,7 @@ export function statement(invoice: Invoice, plays: Plays) {
         thisAmount += 300 * perf.audience
         break
       default:
-        throw new Error(`unknown type: ${play.type}`)
+        throw new Error(`unknown type: ${getPlay(perf).type}`)
     }
     return thisAmount
   }
