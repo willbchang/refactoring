@@ -1,23 +1,20 @@
 export function statement(invoice: Invoice, plays: Plays) {
-  let totalAmount = 0
-  for (let perf of invoice.performances) {
-    totalAmount += getAmount(perf)
-  }
+  let totalAmount = getTotalAmount()
 
   let volumeCredits = 0
+
   for (let perf of invoice.performances) {
     volumeCredits += Math.max(perf.audience - 30, 0)
     if ('comedy' === getPlay(perf).type) volumeCredits += Math.floor(perf.audience / 5)
   }
-
   let result = `Statement for ${invoice.customer}\n`
+
   for (let perf of invoice.performances) {
     result += ` ${getPlay(perf).name}: ${usd(getAmount(perf))} (${perf.audience} seats)\n`
   }
-
   result += `Amount owed is ${usd(totalAmount)}\n`
-  result += `You earned ${volumeCredits} credits\n`
 
+  result += `You earned ${volumeCredits} credits\n`
   return result
 
   function getAmount(perf: Performance) {
@@ -51,5 +48,13 @@ export function statement(invoice: Invoice, plays: Plays) {
       style: 'currency', currency: 'USD',
       minimumFractionDigits: 2
     }).format(amount / 100)
+  }
+
+  function getTotalAmount() {
+    let totalAmount = 0
+    for (let perf of invoice.performances) {
+      totalAmount += getAmount(perf)
+    }
+    return totalAmount
   }
 }
