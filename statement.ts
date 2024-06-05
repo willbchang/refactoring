@@ -2,10 +2,6 @@ export function statement(invoice: Invoice, plays: Plays) {
   let totalAmount = 0
   let volumeCredits = 0
   let result = `Statement for ${invoice.customer}\n`
-  const format = new Intl.NumberFormat('en-US', {
-    style: 'currency', currency: 'USD',
-    minimumFractionDigits: 2
-  }).format
 
   for (let perf of invoice.performances) {
     // add volume credits
@@ -20,6 +16,7 @@ export function statement(invoice: Invoice, plays: Plays) {
   result += `Amount owed is ${format(totalAmount / 100)}\n`
 
   result += `You earned ${volumeCredits} credits\n`
+
   return result
 
   function getAmount(perf: Performance) {
@@ -46,5 +43,12 @@ export function statement(invoice: Invoice, plays: Plays) {
 
   function getPlay(perf: Performance) {
     return plays[perf.playID]
+  }
+
+  function format(amount: number) {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency', currency: 'USD',
+      minimumFractionDigits: 2
+    }).format(amount)
   }
 }
