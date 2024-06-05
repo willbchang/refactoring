@@ -8,14 +8,13 @@ export function statement(invoice: Invoice, plays: Plays) {
   }).format
 
   for (let perf of invoice.performances) {
-    const play = getPlay(perf)
-    let thisAmount = getAmount(play, perf)
+    let thisAmount = getAmount(getPlay(perf), perf)
     // add volume credits
     volumeCredits += Math.max(perf.audience - 30, 0)
     // add extra credit for every ten comedy attendees
-    if ('comedy' === play.type) volumeCredits += Math.floor(perf.audience / 5)
+    if ('comedy' === getPlay(perf).type) volumeCredits += Math.floor(perf.audience / 5)
     // print line for this order
-    result += ` ${play.name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`
+    result += ` ${getPlay(perf).name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`
     totalAmount += thisAmount
   }
 
