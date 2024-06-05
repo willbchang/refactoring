@@ -9,8 +9,7 @@ export function statement(invoice: Invoice, plays: Plays) {
 
   for (let perf of invoice.performances) {
     const play = plays[perf.playID]
-    let thisAmount = 0
-    thisAmount = getAmount(play, thisAmount, perf)
+    let thisAmount = getAmount(play, perf)
     // add volume credits
     volumeCredits += Math.max(perf.audience - 30, 0)
     // add extra credit for every ten comedy attendees
@@ -24,7 +23,8 @@ export function statement(invoice: Invoice, plays: Plays) {
   result += `You earned ${volumeCredits} credits\n`
   return result
 
-  function getAmount(play: Play, thisAmount: number, perf: Performance) {
+  function getAmount(play: Play, perf: Performance) {
+    let thisAmount = 0
     switch (play.type) {
       case 'tragedy':
         thisAmount = 40000
