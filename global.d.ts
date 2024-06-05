@@ -20,6 +20,8 @@ interface Play {
 interface Statement {
   customer: string
   performances: StatementPerformance[]
+  totalAmount: number
+  totalVolumeCredits: number
 }
 
 interface StatementPerformance extends Performance {

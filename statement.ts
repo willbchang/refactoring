@@ -2,7 +2,13 @@ export function statement(invoice: Invoice, plays: Plays) {
   const data: Statement = {
     customer: invoice.customer,
     performances: invoice.performances.map(getStatementPerformance),
+    totalAmount: 0,
+    totalVolumeCredits: 0,
   }
+
+  data.totalAmount = getTotalAmount()
+  data.totalVolumeCredits = getTotalVolumeCredits()
+
   return getPlainText(data)
 
   function getStatementPerformance(performance: Performance) {
@@ -52,27 +58,6 @@ export function statement(invoice: Invoice, plays: Plays) {
     return result
   }
 
-}
-
-function getPlainText(data: Statement) {
-  let result = `Statement for ${data.customer}\n`
-  for (let perf of data.performances) {
-    result += ` ${perf.play.name}: ${usd(perf.amount)} (${perf.audience} seats)\n`
-  }
-
-  result += `Amount owed is ${usd(getTotalAmount())}\n`
-  result += `You earned ${getTotalVolumeCredits()} credits\n`
-
-  return result
-
-
-  function usd(amount: number) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency', currency: 'USD',
-      minimumFractionDigits: 2
-    }).format(amount / 100)
-  }
-
   function getTotalAmount() {
     let result = 0
     for (let perf of data.performances) {
@@ -87,5 +72,25 @@ function getPlainText(data: Statement) {
       result += perf.volumeCredits
     }
     return result
+  }
+}
+
+function getPlainText(data: Statement) {
+  let result = `Statement for ${data.customer}\n`
+  for (let perf of data.performances) {
+    result += ` ${perf.play.name}: ${usd(perf.amount)} (${perf.audience} seats)\n`
+  }
+
+  result += `Amount owed is ${usd(data.totalAmount)}\n`
+  result += `You earned ${data.totalVolumeCredits} credits\n`
+
+  return result
+
+
+  function usd(amount: number) {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency', currency: 'USD',
+      minimumFractionDigits: 2
+    }).format(amount / 100)
   }
 }
