@@ -1,12 +1,14 @@
 export function statement(invoice: Invoice, plays: Plays) {
-  const data = {
+  const data: Statement = {
+    customer: invoice.customer,
+    performances: invoice.performances,
   }
-  return getPlainText(data, invoice, plays)
+  return getPlainText(data, plays)
 }
 
-function getPlainText(data: any, invoice: Invoice, plays: Plays) {
-  let result = `Statement for ${invoice.customer}\n`
-  for (let perf of invoice.performances) {
+function getPlainText(data: Statement, plays: Plays) {
+  let result = `Statement for ${data.customer}\n`
+  for (let perf of data.performances) {
     result += ` ${getPlay(perf).name}: ${usd(getAmount(perf))} (${perf.audience} seats)\n`
   }
 
@@ -50,7 +52,7 @@ function getPlainText(data: any, invoice: Invoice, plays: Plays) {
 
   function getTotalAmount() {
     let result = 0
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       result += getAmount(perf)
     }
     return result
@@ -58,7 +60,7 @@ function getPlainText(data: any, invoice: Invoice, plays: Plays) {
 
   function getTotalVolumeCredits() {
     let result = 0
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       result += Math.max(perf.audience - 30, 0)
       if ('comedy' === getPlay(perf).type) result += Math.floor(perf.audience / 5)
     }

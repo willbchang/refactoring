@@ -16,3 +16,8 @@ interface Play {
   name: string
   type: string
 }
+
+interface Statement {
+  customer: string
+  performances: Performance[]
+}
