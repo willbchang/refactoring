@@ -8,7 +8,7 @@ export function statement(invoice: Invoice, plays: Plays) {
   }).format
 
   for (let perf of invoice.performances) {
-    const play = plays[perf.playID]
+    const play = getPlay(perf)
     let thisAmount = getAmount(play, perf)
     // add volume credits
     volumeCredits += Math.max(perf.audience - 30, 0)
@@ -20,9 +20,9 @@ export function statement(invoice: Invoice, plays: Plays) {
   }
 
   result += `Amount owed is ${format(totalAmount / 100)}\n`
+
   result += `You earned ${volumeCredits} credits\n`
   return result
-
   function getAmount(play: Play, perf: Performance) {
     let thisAmount = 0
     switch (play.type) {
@@ -43,5 +43,9 @@ export function statement(invoice: Invoice, plays: Plays) {
         throw new Error(`unknown type: ${play.type}`)
     }
     return thisAmount
+  }
+
+  function getPlay(perf: Performance) {
+    return plays[perf.playID]
   }
 }
