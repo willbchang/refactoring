@@ -1,15 +1,16 @@
 export function statement(invoice: Invoice, plays: Plays) {
   let totalAmount = 0
-  let volumeCredits = 0
-  let result = `Statement for ${invoice.customer}\n`
-
   for (let perf of invoice.performances) {
     totalAmount += getAmount(perf)
   }
+
+  let volumeCredits = 0
   for (let perf of invoice.performances) {
     volumeCredits += Math.max(perf.audience - 30, 0)
     if ('comedy' === getPlay(perf).type) volumeCredits += Math.floor(perf.audience / 5)
   }
+
+  let result = `Statement for ${invoice.customer}\n`
   for (let perf of invoice.performances) {
     result += ` ${getPlay(perf).name}: ${usd(getAmount(perf))} (${perf.audience} seats)\n`
   }
