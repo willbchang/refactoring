@@ -1,15 +1,26 @@
 export function statement(invoice: Invoice, plays: Plays) {
   const data: Statement = {
     customer: invoice.customer,
-    performances: invoice.performances,
+    performances: invoice.performances.map(getStatementPerformance),
   }
-  return getPlainText(data, plays)
+  return getPlainText(data)
+
+  function getStatementPerformance(performance: Performance): StatementPerformance {
+    return {
+      ...performance,
+      play: getPlay(performance),
+    }
+  }
+
+  function getPlay(perf: Performance) {
+    return plays[perf.playID]
+  }
 }
 
-function getPlainText(data: Statement, plays: Plays) {
+function getPlainText(data: Statement) {
   let result = `Statement for ${data.customer}\n`
   for (let perf of data.performances) {
-    result += ` ${getPlay(perf).name}: ${usd(getAmount(perf))} (${perf.audience} seats)\n`
+    result += ` ${perf.play.name}: ${usd(getAmount(perf))} (${perf.audience} seats)\n`
   }
 
   result += `Amount owed is ${usd(getTotalAmount())}\n`
@@ -17,9 +28,9 @@ function getPlainText(data: Statement, plays: Plays) {
 
   return result
 
-  function getAmount(perf: Performance) {
+  function getAmount(perf: StatementPerformance) {
     let result = 0
-    switch (getPlay(perf).type) {
+    switch (perf.play.type) {
       case 'tragedy':
         result = 40000
         if (perf.audience > 30) {
@@ -34,13 +45,9 @@ function getPlainText(data: Statement, plays: Plays) {
         result += 300 * perf.audience
         break
       default:
-        throw new Error(`unknown type: ${getPlay(perf).type}`)
+        throw new Error(`unknown type: ${perf.play.type}`)
     }
     return result
-  }
-
-  function getPlay(perf: Performance) {
-    return plays[perf.playID]
   }
 
   function usd(amount: number) {
@@ -62,7 +69,7 @@ function getPlainText(data: Statement, plays: Plays) {
     let result = 0
     for (let perf of data.performances) {
       result += Math.max(perf.audience - 30, 0)
-      if ('comedy' === getPlay(perf).type) result += Math.floor(perf.audience / 5)
+      if ('comedy' === perf.play.type) result += Math.floor(perf.audience / 5)
     }
     return result
   }

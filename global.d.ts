@@ -19,5 +19,9 @@ interface Play {
 
 interface Statement {
   customer: string
-  performances: Performance[]
+  performances: StatementPerformance[]
+}
+
+interface StatementPerformance extends Performance {
+  play: Play
 }
