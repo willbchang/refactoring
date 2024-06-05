@@ -8,6 +8,7 @@ export function statement(invoice: Invoice, plays: Plays) {
   result += `You earned ${getTotalVolumeCredits()} credits\n`
 
   return result
+
   function getAmount(perf: Performance) {
     let result = 0
     switch (getPlay(perf).type) {
@@ -42,19 +43,19 @@ export function statement(invoice: Invoice, plays: Plays) {
   }
 
   function getTotalAmount() {
-    let totalAmount = 0
+    let result = 0
     for (let perf of invoice.performances) {
-      totalAmount += getAmount(perf)
+      result += getAmount(perf)
     }
-    return totalAmount
+    return result
   }
 
   function getTotalVolumeCredits() {
-    let volumeCredits = 0
+    let result = 0
     for (let perf of invoice.performances) {
-      volumeCredits += Math.max(perf.audience - 30, 0)
-      if ('comedy' === getPlay(perf).type) volumeCredits += Math.floor(perf.audience / 5)
+      result += Math.max(perf.audience - 30, 0)
+      if ('comedy' === getPlay(perf).type) result += Math.floor(perf.audience / 5)
     }
-    return volumeCredits
+    return result
   }
 }
