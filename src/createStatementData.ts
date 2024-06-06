@@ -65,14 +65,13 @@ export function createStatementData(invoice: Invoice, plays: Play[]) {
       amount: calculator.amount,
       volumeCredits: calculator.volumeCredits,
     } as StatementPerformance
+  }
 
-
-    function getPerformanceCalculator(performance: Performance, play: Play) {
-      switch (play.type) {
-        case 'tragedy': return new TragedyCalculator(performance, play)
-        case 'comedy':  return new ComedyCalculator(performance, play)
-        default: throw new Error('Unknown play type')
-      }
+  function getPerformanceCalculator(performance: Performance, play: Play) {
+    switch (play.type) {
+      case 'tragedy': return new TragedyCalculator(performance, play)
+      case 'comedy':  return new ComedyCalculator(performance, play)
+      default: throw new Error('Unknown play type')
     }
   }
 
