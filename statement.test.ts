@@ -3,6 +3,7 @@ import { describe, expect, test } from 'bun:test'
 import { createStatementData } from './createStatementData'
 import { Invoices, Plays } from './data'
 import { statement } from './statement'
+import { usd } from './utils'
 
 describe('createStatementData', () => {
   const data = createStatementData(Invoices[0], Plays)
@@ -53,5 +54,11 @@ You earned 47 credits
 <p>You earned <em>47</em> credits</p>
 `
     expect(html).toBe(result)
+  })
+})
+
+describe('format', () => {
+  test('usd', () => {
+    expect(usd(123456789)).toBe('$1,234,567.89')
   })
 })
