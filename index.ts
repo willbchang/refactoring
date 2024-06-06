@@ -1,4 +1,5 @@
 import { Invoices, Plays } from './data'
 import { statement } from './statement'
 
-console.log(statement(Invoices[0], Plays))
+const { text, html } = statement(Invoices[0], Plays)
+console.log(text, '\n', html)
