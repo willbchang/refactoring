@@ -56,13 +56,13 @@ export function createStatementData(invoice: Invoice, plays: Play[]) {
 
   function getStatementPerformance(performance: Performance) {
     const calculator = new PerformanceCalculator(performance, getPlay(performance))
-    let result: StatementPerformance = {
+
+    return  {
       ...performance,
       play: calculator.play,
       amount: calculator.amount,
       volumeCredits: calculator.volumeCredits,
-    }
-    return result
+    } as StatementPerformance
   }
 
   function getPlay(perf: Performance) {
