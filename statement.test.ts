@@ -1,5 +1,5 @@
 // @ts-ignore
-import { expect, describe, test } from 'bun:test'
+import { describe, expect, test } from 'bun:test'
 import { createStatementData } from './createStatementData'
 import { Invoices, Plays } from './data'
 import { statement } from './statement'
@@ -28,13 +28,30 @@ describe('createStatementData', () => {
   })
 })
 
-test('statement', () => {
-  const result = `Statement for BigCo
+describe('statement', () => {
+  const { text, html } = statement(Invoices[0], Plays)
+  test('plain text statement', () => {
+    const result = `Statement for BigCo
  Hamlet: $650.00 (55 seats)
  As You Like It: $580.00 (35 seats)
  Othello: $500.00 (40 seats)
 Amount owed is $1,730.00
 You earned 47 credits
 `
-  expect(statement(Invoices[0], Plays).text).toBe(result)
+    expect(text).toBe(result)
+  })
+
+
+  test('html statement', () => {
+    const result = `<h1>Statement for BigCo</h1>
+<table>
+<tr><th>play</th><th>seats</th><th>cost</th></tr> <tr><td>Hamlet</td><td>55</td><td>$650.00</td></tr>
+ <tr><td>As You Like It</td><td>35</td><td>$580.00</td></tr>
+ <tr><td>Othello</td><td>40</td><td>$500.00</td></tr>
+</table>
+<p>Amount owed is <em>$1,730.00</em></p>
+<p>You earned <em>47</em> credits</p>
+`
+    expect(html).toBe(result)
+  })
 })
