@@ -1,12 +1,15 @@
 class PerformanceCalculator {
   public performance: Performance
-  public play: Play
+  public plays: Play[]
 
-  constructor(performance: Performance, play: Play) {
+  constructor(performance: Performance, plays: Play[]) {
     this.performance = performance
-    this.play = play
+    this.plays = plays
   }
 
+   get play() {
+    return this.plays.find(item => item.id === this.performance.playID)!
+  }
 
    get amount() {
     let result = 0
@@ -55,7 +58,7 @@ export function createStatementData(invoice: Invoice, plays: Play[]) {
   return result
 
   function getStatementPerformance(performance: Performance) {
-    const calculator = new PerformanceCalculator(performance, getPlay(performance))
+    const calculator = new PerformanceCalculator(performance, plays)
 
     return  {
       ...performance,
@@ -65,9 +68,6 @@ export function createStatementData(invoice: Invoice, plays: Play[]) {
     } as StatementPerformance
   }
 
-  function getPlay(perf: Performance) {
-    return plays.find(item => item.id === perf.playID)!
-  }
 
   function getTotalAmount() {
     return result.performances.reduce((sum, item) => sum + item.amount, 0)
