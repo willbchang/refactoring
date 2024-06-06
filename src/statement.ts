@@ -1,7 +1,7 @@
 import { createStatementData } from './createStatementData'
 import { usd } from '../utils/format'
 
-export function statement(invoice: Invoice, plays: Plays) {
+export function statement(invoice: Invoice, plays: Play[]) {
   const data = createStatementData(invoice, plays)
   return {
     text: getPlainText(data),

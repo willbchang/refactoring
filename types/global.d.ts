@@ -8,11 +8,8 @@ interface Performance {
   audience: number
 }
 
-interface Plays {
-  [key: string]: Play
-}
-
 interface Play {
+  id: string
   name: string
   type: string
 }

@@ -1,4 +1,4 @@
-export function createStatementData(invoice: Invoice, plays: Plays) {
+export function createStatementData(invoice: Invoice, plays: Play[]) {
   const data: Statement = {
     customer: invoice.customer,
     performances: invoice.performances.map(getStatementPerformance),
@@ -25,7 +25,7 @@ export function createStatementData(invoice: Invoice, plays: Plays) {
   }
 
   function getPlay(perf: Performance) {
-    return plays[perf.playID]
+    return plays.find(item => item.id === perf.playID)!
   }
 
   function getAmount(perf: StatementPerformance) {

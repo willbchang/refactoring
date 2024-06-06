@@ -18,17 +18,20 @@ export const Invoices: Invoice[] = [
   },
 ]
 
-export const Plays: Plays = {
-  hamlet: {
+export const Plays: Play[] = [
+  {
+    id: 'hamlet',
     name: 'Hamlet',
     type: 'tragedy'
   },
-  'as-like': {
+   {
+     id:'as-like',
     name: 'As You Like It',
     type: 'comedy'
   },
-  othello: {
+   {
+     id: 'othello',
     name: 'Othello',
     type: 'tragedy'
   }
-}
+]
