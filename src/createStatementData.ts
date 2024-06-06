@@ -42,17 +42,17 @@ class PerformanceCalculator {
 }
 
 export function createStatementData(invoice: Invoice, plays: Play[]) {
-  const data: Statement = {
+  const result: Statement = {
     customer: invoice.customer,
     performances: invoice.performances.map(getStatementPerformance),
     totalAmount: 0,
     totalVolumeCredits: 0,
   }
 
-  data.totalAmount = getTotalAmount()
-  data.totalVolumeCredits = getTotalVolumeCredits()
+  result.totalAmount = getTotalAmount()
+  result.totalVolumeCredits = getTotalVolumeCredits()
 
-  return data
+  return result
 
   function getStatementPerformance(performance: Performance) {
     const calculator = new PerformanceCalculator(performance, getPlay(performance))
@@ -70,10 +70,10 @@ export function createStatementData(invoice: Invoice, plays: Play[]) {
   }
 
   function getTotalAmount() {
-    return data.performances.reduce((sum, item) => sum + item.amount, 0)
+    return result.performances.reduce((sum, item) => sum + item.amount, 0)
   }
 
   function getTotalVolumeCredits() {
-    return data.performances.reduce((sum, item) => sum + item.volumeCredits, 0)
+    return result.performances.reduce((sum, item) => sum + item.volumeCredits, 0)
   }
 }
