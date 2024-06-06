@@ -1,4 +1,8 @@
 export function statement(invoice: Invoice, plays: Plays) {
+  return getPlainText(createStatementData(invoice, plays))
+}
+
+export function createStatementData(invoice: Invoice, plays: Plays) {
   const data: Statement = {
     customer: invoice.customer,
     performances: invoice.performances.map(getStatementPerformance),
@@ -9,7 +13,7 @@ export function statement(invoice: Invoice, plays: Plays) {
   data.totalAmount = getTotalAmount()
   data.totalVolumeCredits = getTotalVolumeCredits()
 
-  return getPlainText(data)
+  return data
 
   function getStatementPerformance(performance: Performance) {
     let result: StatementPerformance = {
