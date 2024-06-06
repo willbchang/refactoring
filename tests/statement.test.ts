@@ -1,9 +1,9 @@
 // @ts-ignore
 import { describe, expect, test } from 'bun:test'
-import { createStatementData } from './createStatementData'
-import { Invoices, Plays } from './data'
-import { statement } from './statement'
-import { usd } from './utils/format'
+import { createStatementData } from '../src/createStatementData'
+import { Invoices, Plays } from '../utils/data'
+import { statement } from '../src/statement'
+import { usd } from '../utils/format'
 
 describe('createStatementData', () => {
   const data = createStatementData(Invoices[0], Plays)

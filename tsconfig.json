@@ -8,7 +8,7 @@
     "skipLibCheck": true
   },
   "include": [
-    "global.d.ts",
+    "types/global.d.ts",
     "**/*.ts"
   ]
 }

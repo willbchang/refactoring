@@ -1,5 +1,5 @@
 import { createStatementData } from './createStatementData'
-import { usd } from './utils/format'
+import { usd } from '../utils/format'
 
 export function statement(invoice: Invoice, plays: Plays) {
   const data = createStatementData(invoice, plays)
