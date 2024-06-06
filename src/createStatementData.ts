@@ -1,8 +1,10 @@
 class PerformanceCalculator {
-  private performance: Performance
+  public performance: Performance
+  public play: Play
 
-  constructor(performance: Performance) {
+  constructor(performance: Performance, play: Play) {
     this.performance = performance
+    this.play = play
   }
 
 }
@@ -21,10 +23,10 @@ export function createStatementData(invoice: Invoice, plays: Play[]) {
   return data
 
   function getStatementPerformance(performance: Performance) {
-    const calculator = new PerformanceCalculator(performance)
+    const calculator = new PerformanceCalculator(performance, getPlay(performance))
     let result: StatementPerformance = {
       ...performance,
-      play: getPlay(performance),
+      play: calculator.play,
       amount: 0,
       volumeCredits: 0,
     }
