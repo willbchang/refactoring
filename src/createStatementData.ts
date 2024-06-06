@@ -8,31 +8,39 @@ class PerformanceCalculator {
   }
 
   get amount() {
-    let result = 0
-    switch (this.play.type) {
-      case 'tragedy':
-        result = 40000
-        if (this.performance.audience > 30) {
-          result += 1000 * (this.performance.audience - 30)
-        }
-        break
-      case 'comedy':
-        break
-      default:
-        throw new Error(`unknown type: ${this.play.type}`)
+     return 0
+  }
+
+  get volumeCredits() {
+    return  Math.max(this.performance.audience - 30, 0)
+  }
+}
+
+class TragedyCalculator extends PerformanceCalculator {
+  get amount() {
+    let result = 40000
+    if (this.performance.audience > 30) {
+      result += 1000 * (this.performance.audience - 30)
     }
-    return result
-  }
-
-
-   get volumeCredits() {
-    let result = 0
-    result += Math.max(this.performance.audience - 30, 0)
-    if ('comedy' === this.play.type) result += Math.floor(this.performance.audience / 5)
 
     return result
   }
+}
 
+class ComedyCalculator extends PerformanceCalculator {
+  get amount() {
+    let result = 30000
+    if (this.performance.audience > 20) {
+      result += 10000 + 500 * (this.performance.audience - 20)
+    }
+    result += 300 * this.performance.audience
+
+    return result
+  }
+
+  get volumeCredits() {
+    return super.volumeCredits + Math.floor(this.performance.audience / 5)
+  }
 }
 
 export function createStatementData(invoice: Invoice, plays: Play[]) {
@@ -49,7 +57,7 @@ export function createStatementData(invoice: Invoice, plays: Play[]) {
   return result
 
   function getStatementPerformance(performance: Performance) {
-    const calculator = getPerformanceCalculator()
+    const calculator = getPerformanceCalculator(performance, getPlay(performance))
 
     return {
       ...performance,
@@ -59,8 +67,12 @@ export function createStatementData(invoice: Invoice, plays: Play[]) {
     } as StatementPerformance
 
 
-    function getPerformanceCalculator() {
-      return new PerformanceCalculator(performance, getPlay(performance))
+    function getPerformanceCalculator(performance: Performance, play: Play) {
+      switch (play.type) {
+        case 'tragedy': return new TragedyCalculator(performance, play)
+        case 'comedy':  return new ComedyCalculator(performance, play)
+        default: throw new Error('Unknown play type')
+      }
     }
   }
 
