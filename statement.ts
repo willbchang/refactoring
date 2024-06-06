@@ -63,11 +63,7 @@ export function createStatementData(invoice: Invoice, plays: Plays) {
   }
 
   function getTotalAmount() {
-    let result = 0
-    for (let perf of data.performances) {
-      result += perf.amount
-    }
-    return result
+    return data.performances.reduce((sum, item) => sum + item.amount, 0 )
   }
 
   function getTotalVolumeCredits() {
