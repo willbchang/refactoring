@@ -1,17 +1,13 @@
 class PerformanceCalculator {
   public performance: Performance
-  public plays: Play[]
+  public play: Play
 
-  constructor(performance: Performance, plays: Play[]) {
+  constructor(performance: Performance, play: Play) {
     this.performance = performance
-    this.plays = plays
+    this.play = play
   }
 
-   get play() {
-    return this.plays.find(item => item.id === this.performance.playID)!
-  }
-
-   get amount() {
+  get amount() {
     let result = 0
     switch (this.play.type) {
       case 'tragedy':
@@ -21,11 +17,6 @@ class PerformanceCalculator {
         }
         break
       case 'comedy':
-        result = 30000
-        if (this.performance.audience > 20) {
-          result += 10000 + 500 * (this.performance.audience - 20)
-        }
-        result += 300 * this.performance.audience
         break
       default:
         throw new Error(`unknown type: ${this.play.type}`)
@@ -60,7 +51,7 @@ export function createStatementData(invoice: Invoice, plays: Play[]) {
   function getStatementPerformance(performance: Performance) {
     const calculator = getPerformanceCalculator()
 
-    return  {
+    return {
       ...performance,
       play: calculator.play,
       amount: calculator.amount,
@@ -69,8 +60,12 @@ export function createStatementData(invoice: Invoice, plays: Play[]) {
 
 
     function getPerformanceCalculator() {
-      return new PerformanceCalculator(performance, plays)
+      return new PerformanceCalculator(performance, getPlay(performance))
     }
+  }
+
+  function getPlay(perf: Performance) {
+    return plays.find(item => item.id === perf.playID)!
   }
 
   function getTotalAmount() {
