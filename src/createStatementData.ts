@@ -58,7 +58,7 @@ export function createStatementData(invoice: Invoice, plays: Play[]) {
   return result
 
   function getStatementPerformance(performance: Performance) {
-    const calculator = new PerformanceCalculator(performance, plays)
+    const calculator = getPerformanceCalculator()
 
     return  {
       ...performance,
@@ -66,8 +66,12 @@ export function createStatementData(invoice: Invoice, plays: Play[]) {
       amount: calculator.amount,
       volumeCredits: calculator.volumeCredits,
     } as StatementPerformance
-  }
 
+
+    function getPerformanceCalculator() {
+      return new PerformanceCalculator(performance, plays)
+    }
+  }
 
   function getTotalAmount() {
     return result.performances.reduce((sum, item) => sum + item.amount, 0)
