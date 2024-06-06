@@ -2,7 +2,10 @@ import { createStatementData } from './createStatementData'
 import { usd } from './utils'
 
 export function statement(invoice: Invoice, plays: Plays) {
-  return getPlainText(createStatementData(invoice, plays))
+  const data = createStatementData(invoice, plays)
+  return {
+    text: getPlainText(data),
+  }
 }
 
 function getPlainText(data: Statement) {

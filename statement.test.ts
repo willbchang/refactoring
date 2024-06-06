@@ -11,5 +11,5 @@ test('statement', () => {
 Amount owed is $1,730.00
 You earned 47 credits
 `
-  expect(statement(Invoices[0], Plays)).toBe(result)
+  expect(statement(Invoices[0], Plays).text).toBe(result)
 })
