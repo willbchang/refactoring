@@ -1,3 +1,5 @@
+import { usd } from './utils'
+
 export function statement(invoice: Invoice, plays: Plays) {
   return getPlainText(createStatementData(invoice, plays))
 }
@@ -81,12 +83,4 @@ function getPlainText(data: Statement) {
   result += `You earned ${data.totalVolumeCredits} credits\n`
 
   return result
-
-
-  function usd(amount: number) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency', currency: 'USD',
-      minimumFractionDigits: 2
-    }).format(amount / 100)
-  }
 }
