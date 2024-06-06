@@ -3,7 +3,7 @@ import { describe, expect, test } from 'bun:test'
 import { createStatementData } from './createStatementData'
 import { Invoices, Plays } from './data'
 import { statement } from './statement'
-import { usd } from './utils'
+import { usd } from './utils/format'
 
 describe('createStatementData', () => {
   const data = createStatementData(Invoices[0], Plays)
