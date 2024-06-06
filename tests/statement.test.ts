@@ -31,6 +31,7 @@ describe('createStatementData', () => {
 
 describe('statement', () => {
   const { text, html } = statement(Invoices[0], Plays)
+
   test('plain text statement', () => {
     const result = `Statement for BigCo
  Hamlet: $650.00 (55 seats)
@@ -41,7 +42,6 @@ You earned 47 credits
 `
     expect(text).toBe(result)
   })
-
 
   test('html statement', () => {
     const result = `<h1>Statement for BigCo</h1>
